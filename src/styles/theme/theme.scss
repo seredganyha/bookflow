@@ -1,0 +1,19 @@
+:root, [data-theme="base"] {
+  --color-primary: #312EB5;
+  --color-secondary: rgba(32, 40, 62, 0.8);;
+  --color-background: #FFFFFF;
+  --color-text: #181818;
+}
+
+:root, [data-theme="dark"] {
+  --color-primary: #312EB5;
+  --color-secondary: rgba(32, 40, 62, 0.8);;
+  --color-background: #181818;
+  --color-text: #FFFFFF;
+}
+
+[data-theme] {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
