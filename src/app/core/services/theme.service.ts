@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BODY } from '../tokens/body-token';
-import { CURRENT_THEME_SUBJECT } from '../tokens/current-theme-token';
 import { Theme } from '../../types/theme';
 
 @Injectable({
@@ -9,22 +8,26 @@ import { Theme } from '../../types/theme';
 })
 export class ThemeService {
 
-  constructor(
-    @Inject(CURRENT_THEME_SUBJECT) private currentTheme$: BehaviorSubject<Theme>,
-    @Inject(BODY) private bodyRef: HTMLElement,
-  ) {}
+  private readonly currentTheme$ = new BehaviorSubject<Theme>(Theme.Base);
 
-  get currentTheme(): Theme {
-    return this.currentTheme$.getValue();
+  constructor(@Inject(BODY) private bodyRef: HTMLElement) {
+    this.currentTheme$.subscribe((theme) => this.bodyRef.setAttribute('data-theme', theme))
   }
 
   setTheme(theme: Theme): void {
     this.currentTheme$.next(theme);
   }
 
+  get currentTheme() {
+    return this.currentTheme$;
+  }
+
+  private getNextTheme(theme: Theme): Theme {
+    return theme === Theme.Base ? Theme.Dark : Theme.Base;
+  }
+
   toggleTheme(): void {
-    const newTheme = this.currentTheme === Theme.Base ? Theme.Dark : Theme.Base;
-    this.bodyRef.setAttribute('data-theme', newTheme);
-    this.setTheme(newTheme);
+    const nextTheme = this.getNextTheme(this.currentTheme.value);
+    this.setTheme(nextTheme);
   }
 }
