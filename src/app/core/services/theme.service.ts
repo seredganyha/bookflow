@@ -7,19 +7,15 @@ import { Theme } from '../../types/theme';
   providedIn: 'root',
 })
 export class ThemeService {
-
-  private readonly currentTheme$ = new BehaviorSubject<Theme>(Theme.Base);
+  private readonly currentThemeSource$ = new BehaviorSubject<Theme>(Theme.Base);
+  readonly currentTheme$ = this.currentThemeSource$.asObservable();
 
   constructor(@Inject(BODY) private bodyRef: HTMLElement) {
     this.currentTheme$.subscribe((theme) => this.bodyRef.setAttribute('data-theme', theme))
   }
 
   setTheme(theme: Theme): void {
-    this.currentTheme$.next(theme);
-  }
-
-  get currentTheme() {
-    return this.currentTheme$;
+    this.currentThemeSource$.next(theme);
   }
 
   private getNextTheme(theme: Theme): Theme {
@@ -27,7 +23,7 @@ export class ThemeService {
   }
 
   toggleTheme(): void {
-    const nextTheme = this.getNextTheme(this.currentTheme.value);
+    const nextTheme = this.getNextTheme(this.currentThemeSource$.value);
     this.setTheme(nextTheme);
   }
 }
