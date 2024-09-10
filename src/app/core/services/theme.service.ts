@@ -9,6 +9,8 @@ import { Theme } from '../../types/theme';
 export class ThemeService {
   private readonly currentThemeSource$ = new BehaviorSubject<Theme>(Theme.Base);
   readonly currentTheme$ = this.currentThemeSource$.asObservable();
+  private readonly themesSource = new BehaviorSubject<Theme[]>(Object.values(Theme))
+  readonly themes$ = this.themesSource.asObservable();
 
   constructor(@Inject(BODY) private bodyRef: HTMLElement) {
     this.currentTheme$.subscribe((theme) => this.bodyRef.setAttribute('data-theme', theme))
