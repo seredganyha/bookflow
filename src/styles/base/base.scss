@@ -1,0 +1,62 @@
+@mixin gap-sizes {
+  &__gap-small {
+    gap: 8px;
+  }
+
+  &__gap-medium {
+    gap: 16px;
+  }
+
+  &__gap-large {
+    gap: 32px;
+  }
+}
+
+.flex {
+  display: flex;
+
+  &__center {
+    align-items: center;
+  }
+
+  &__row {
+    flex-direction: row;
+  }
+
+  &__column {
+    flex-direction: column;
+  }
+
+  &__space-between {
+    justify-content: space-between;
+  }
+
+  @include gap-sizes;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+
+  &__horizontal {
+    flex-direction: row;
+  }
+
+  &__center {
+    align-items: center;
+  }
+
+  &__space-between {
+    justify-content: space-between;
+  }
+
+  @include gap-sizes;
+}
+
+input {
+  padding: 8px;
+  border-radius: 6px;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+}
