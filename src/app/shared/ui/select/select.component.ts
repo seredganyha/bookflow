@@ -1,21 +1,51 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-select',
-  imports: [CommonModule],
   templateUrl: './select.component.html',
-  styleUrl: './select.component.scss',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [CommonModule, FormsModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true,
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectComponent {
-  @Input() options: string[] | null = [];
-  @Input() value: string | null = '';
+export class SelectComponent<T> implements ControlValueAccessor {
+  @Input()
+  select: T | null = null;
 
-  @Output() valueChange = new EventEmitter<string>();
+  @Input()
+  options: T[] | null = null;
 
-  onValueChange(newValue: string): void {
-    this.valueChange.emit(newValue);
+  @Output() selectChange = new EventEmitter<T>();
+
+  private onChange: (value: T) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  writeValue(value: T | null): void {
+    this.select = value;
+  }
+
+  registerOnChange(fn: (value: T) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  onValueChange(value: any): void {
+    this.selectChange.emit(value);
+    this.onChange(value);
+  }
+
+  trackByIndex(index: number): number {
+    return index;
   }
 }
