@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, combineLatest, map, Observable } from "rxjs";
+import { BehaviorSubject, combineLatest, map, Observable, tap } from "rxjs";
 import { Theme } from "../types/theme";
 import { CURRENT_THEME, СurrentThemeProvider } from "../core/tokens/theme-token";
 import { ThemeService } from "../core/services/theme.service";
@@ -20,10 +20,11 @@ export class SettingsService {
     )
     .pipe(
       map(([fragmentsResendInterval, fragmentCharLimit, currentTheme]) => ({
-        fragmentsResendInterval,
-        fragmentCharLimit,
-        currentTheme
-      }))
+          fragmentsResendInterval,
+          fragmentCharLimit,
+          currentTheme
+       })
+      )
     )
 
   constructor(

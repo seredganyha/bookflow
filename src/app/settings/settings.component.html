@@ -25,10 +25,11 @@
 
   <div class="flex flex__center flex__gap-small">
     <label for="theme">Текущая тема:</label>
-    <app-select 
-      [options]="themes$ | async" 
-      [value]="currentTheme$ | async" 
-      (valueChange)="onThemeChange($event)">
-    </app-select>
+      <app-select
+        [select]="settings?.currentTheme"
+        [options]="themes$ | async"
+        (selectChange)="onThemeChange($event)"
+      >
+      </app-select>
   </div>
 </div>

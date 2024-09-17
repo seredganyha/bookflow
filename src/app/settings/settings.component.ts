@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { SettingsService } from './settings.service';
 import { Theme } from '../types/theme';
 import { THEMES } from '../core/tokens/themes-token';
@@ -16,9 +16,10 @@ export class SettingsComponent {
   
   constructor(
     private settingsService: SettingsService,
-    @Inject(THEMES) public themes$: Observable<string[]>,
-    @Inject(CURRENT_THEME) public currentTheme$: Observable<string>,
-  ) {}
+    @Inject(THEMES) public themes$: Observable<Theme[]>,
+    @Inject(CURRENT_THEME) public currentTheme$: Observable<Theme>,
+  ) {
+  }
 
   onResendIntervalChange(interval: string): void {
     this.settingsService.setFragmentsResendInterval(Number(interval));
@@ -28,8 +29,8 @@ export class SettingsComponent {
     this.settingsService.setFragmentCharLimit(Number(charLimit)); 
   }
 
-  onThemeChange(theme: string): void {
-    this.settingsService.setTheme(theme as Theme); 
+  onThemeChange(theme: Theme | undefined): void {
+    if(theme) this.settingsService.setTheme(theme);
   }
 }
 
