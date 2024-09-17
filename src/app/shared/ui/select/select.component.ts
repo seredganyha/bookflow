@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -25,11 +25,14 @@ export class SelectComponent<T> implements ControlValueAccessor {
 
   @Output() selectChange = new EventEmitter<T>();
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   private onChange: (value: T) => void = () => {};
   private onTouched: () => void = () => {};
 
   writeValue(value: T | null): void {
     this.select = value;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (value: T) => void): void {
