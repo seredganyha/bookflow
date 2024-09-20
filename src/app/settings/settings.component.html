@@ -1,0 +1,35 @@
+<div class="stack stack__gap-medium" *ngIf="settings$ | async as settings">
+  <h1>Настройки</h1>
+
+  <div class="flex flex__center flex__gap-small">
+    <label for="resendInterval">Интервал повторной отправки фрагментов:</label>
+    <input 
+      #resendInterval
+      id="resendInterval" 
+      type="number" 
+      [value]="settings?.fragmentsResendInterval" 
+      (input)="onResendIntervalChange(resendInterval.value)"
+    />
+  </div>
+
+  <div class="flex flex__center flex__gap-small">
+    <label for="charLimit">Лимит символов фрагмента:</label>
+    <input 
+      #charLimit
+      id="charLimit" 
+      type="number" 
+      [value]="settings?.fragmentCharLimit" 
+      (input)="onCharLimitChange(charLimit.value)"
+    />
+  </div>
+
+  <div class="flex flex__center flex__gap-small">
+    <label for="theme">Текущая тема:</label>
+      <app-select
+        [select]="settings?.currentTheme"
+        [options]="themes$ | async"
+        (selectChange)="onThemeChange($event)"
+      >
+      </app-select>
+  </div>
+</div>
