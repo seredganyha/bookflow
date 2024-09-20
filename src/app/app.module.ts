@@ -20,7 +20,7 @@ import { ThemeService } from './core/services/theme.service';
   providers: [
     { 
       provide: APP_INITIALIZER,
-      useFactory: (themeService: ThemeService) => themeService.init,
+      useFactory: (themeService: ThemeService) => themeService.init(),
       deps: [ThemeService], 
       multi: true 
     }
