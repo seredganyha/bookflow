@@ -1,4 +1,4 @@
-import { Injectable, Inject, ElementRef } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BODY } from '../tokens/body-token';
 import { Theme } from '../../types/theme';
@@ -30,7 +30,6 @@ export class ThemeService {
         resolve();
       });
     }
-
   }
   
   setTheme(theme: Theme): void {

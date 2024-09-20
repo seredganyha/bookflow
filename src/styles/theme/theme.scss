@@ -1,3 +1,10 @@
+:root, [data-theme="base"] {
+  --color-primary: #312EB5;
+  --color-secondary: rgba(32, 40, 62, 0.8);;
+  --color-background: #FFFFFF;
+  --color-text: #181818;
+}
+
 :root, [data-theme="dark"] {
   --color-primary: #312EB5;
   --color-secondary: rgba(32, 40, 62, 0.8);;
@@ -9,11 +16,3 @@
   background-color: var(--color-background);
   color: var(--color-text);
 }
-
-:root, [data-theme="base"] {
-  --color-primary: #312EB5;
-  --color-secondary: rgba(32, 40, 62, 0.8);;
-  --color-background: #FFFFFF;
-  --color-text: #181818;
-}
-
