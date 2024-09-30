@@ -24,11 +24,9 @@ export class ThemeService {
 
   init() {
     return () => {
-      return new Promise<void>((resolve) => {
-        const initialTheme = this.storeService.getLocalStorageValueOrInitial<Theme>('currentTheme', Theme.Dark);
-        this.setTheme(initialTheme);
-        resolve();
-      });
+      const initialTheme = this.storeService.getLocalStorageValueOrInitial<Theme>('currentTheme', Theme.Dark);
+      this.setTheme(initialTheme);
+      return Promise.resolve(true);
     }
   }
   
