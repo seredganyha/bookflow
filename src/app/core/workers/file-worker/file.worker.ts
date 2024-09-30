@@ -7,7 +7,7 @@ class FileWorker {
 
   @control(FileWorkerCommands.ReadFile)
   async readFile (file: File) {
-    return await this.fileToText(file);;
+    return await this.fileToText(file);
   }
   
   private async fileToText (file: File): Promise<string> {
