@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { InternalMessage, WorkerDefinition, WorkerRequest, WorkerResponse, Workers } from "./worker.types";
-import { v4 as uuidv4 } from 'uuid';
+import { getUuid } from "../../shared/utils/utils";
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class WorkerService {
       responseSubject.complete(); 
     };
 
-    const requestWithId = {...request, requestId: uuidv4()}
+    const requestWithId = {...request, requestId: getUuid()}
 
     this.workers.get(worker)?.postMessage(requestWithId);
     this.pendingRequests.set(requestWithId.requestId, waitPendingFn);
@@ -36,7 +36,7 @@ export class WorkerService {
         resolve(response as WorkerResponse<T>);
       };
 
-      const internalRequest = {...request, requestId: uuidv4()}
+      const internalRequest = {...request, requestId: getUuid()}
 
       this.workers.get(worker)?.postMessage(internalRequest);
       this.pendingRequests.set(internalRequest.requestId, waitPendingFn);
