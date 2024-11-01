@@ -1,8 +1,11 @@
 import { Constructor, WorkerRequest, WorkerResponse } from "./worker.types";
 
+
 export function control(control: string) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     if (!target.controls) {
+      // init controls here because the method decorator is processed before the class decorator
+      // on new decorators it will be possible to use addInitializer
       target.controls = new Map();
     }
 
@@ -13,12 +16,13 @@ export function control(control: string) {
 export function worker<TBase extends Constructor>(Base: TBase) {
 
   return class extends Base {
+    // init in @controls
     private controls!: Map<string, (...args: any[]) => any>;
 
     constructor(...args: any[]) {
       super(...args);
 
-      self.onmessage = async (event: MessageEvent<WorkerRequest>) => {
+      self.onmessage = async (event: MessageEvent<WorkerResponse>) => {
         const request = event.data;
 
         const { command, payload } = request;
@@ -33,7 +37,9 @@ export function worker<TBase extends Constructor>(Base: TBase) {
       };
 
       for(let entry of this.controls) {
-        this.controls.set(entry[0], entry[1].bind(this));
+        const [command, haldler] = entry;
+        
+        this.controls.set(command, haldler.bind(this));
       }
     }
 
