@@ -57,7 +57,7 @@ export class WorkerService {
         }
       });
 
-      return Promise.resolve(true)
+      return Promise.resolve()
     }
   }
 }

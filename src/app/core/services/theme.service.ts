@@ -26,7 +26,7 @@ export class ThemeService {
     return () => {
       const initialTheme = this.storeService.getLocalStorageValueOrInitial<Theme>('currentTheme', Theme.Dark);
       this.setTheme(initialTheme);
-      return Promise.resolve(true);
+      return Promise.resolve();
     }
   }
   
