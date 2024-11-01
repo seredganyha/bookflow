@@ -6,13 +6,13 @@ declare module 'text-manager' {
     // -__-  bruuh
     constructor(
       maxChar?: number, 
-      indexes?: import('./tm-worker.types').TMIndexes
+      indexes?: import('./tm.types').TMIndexes
     )
 
     getText(): string;
     setFile(bookContent: string): void;
-    getIndexes(): import('./tm-worker.types').TMIndexes;
-    setIndexes(indexes: import('./tm-worker.types').TMIndexes): void;
+    getIndexes(): import('./tm.types').TMIndexes;
+    setIndexes(indexes: import('./tm.types').TMIndexes): void;
   }
 
   export class QueueNode {
