@@ -52,16 +52,14 @@ export class WorkerService {
       }
 
       this.workers.forEach(worker => {
-        if (worker) {
-          worker.onmessage = (event: MessageEvent<InternalMessage>) => {
-            const { requestId } = event.data;
-            const pendingFn = this.pendingRequests.get(requestId);
+        worker.onmessage = (event: MessageEvent<InternalMessage>) => {
+          const { requestId } = event.data;
+          const pendingFn = this.pendingRequests.get(requestId);
 
-            if (pendingFn) {
-                pendingFn(event.data);
-            }
-          };
-        }
+          if (pendingFn) {
+              pendingFn(event.data);
+          }
+        };
       });
 
       return Promise.resolve()
