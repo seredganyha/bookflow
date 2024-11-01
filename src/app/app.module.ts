@@ -7,6 +7,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ThemeService } from './core/services/theme.service';
 import { WorkerService } from './core/workers/worker.service';
 
+import { WORKER_DEFINITIONS, WORKER_DEFINITIONS_PROVIDERS } from './core/workers/workers.provide';
+import { WorkerDefinition } from './core/workers/worker.types';
 
 @NgModule({
   declarations: [
@@ -15,10 +17,10 @@ import { WorkerService } from './core/workers/worker.service';
   imports: [
     BrowserModule,
     RouterOutlet, 
-    SettingsModule, 
     CommonModule,
   ],
   providers: [
+    WORKER_DEFINITIONS_PROVIDERS,
     { 
       provide: APP_INITIALIZER,
       useFactory: (themeService: ThemeService) => themeService.init(),
@@ -27,8 +29,8 @@ import { WorkerService } from './core/workers/worker.service';
     },
     { 
       provide: APP_INITIALIZER,
-      useFactory: (workerService: WorkerService) =>  workerService.init(),
-      deps: [WorkerService], 
+      useFactory: (workerService: WorkerService, workers: WorkerDefinition[]) =>  workerService.init(workers),
+      deps: [WorkerService, WORKER_DEFINITIONS], 
       multi: true 
     },
   ],

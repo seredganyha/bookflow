@@ -1,11 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { WorkerRequest, WorkerResponse } from "./worker.types";
-
-export enum Workers {
-  FileWorker = "FileWorker",
-  TMWorker = "TMWorker",
-}
+import { InternalMessage, WorkerDefinition, WorkerRequest, WorkerResponse, Workers } from "./worker.types";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -13,40 +9,51 @@ export enum Workers {
 
 export class WorkerService {
   private workers = new Map<Workers | string, Worker>();
-  private pendingRequests: Map<string, (response: WorkerResponse) => void> = new Map();
+  private pendingRequests: Map<string, (response: InternalMessage) => void> = new Map();
 
   constructor() {}
 
-  request<T extends WorkerResponse>(request: WorkerRequest): Observable<T> {
-    const responseSubject = new Subject<T>();
+  request<T>(request: WorkerRequest, worker = Workers.BookWorker): Observable<WorkerResponse<T>> {
+    const responseSubject = new Subject<WorkerResponse<T>>();
 
-    const waitPendingFn = (response: WorkerResponse) => {
-      responseSubject.next(response as T);
+    const waitPendingFn = (response: InternalMessage) => {
+      const {requestId, worker, ...res} = response
+      
+      responseSubject.next(res as WorkerResponse<T>);
       responseSubject.complete(); 
     };
 
-    this.workers.get(request.worker)?.postMessage(request);
-    this.pendingRequests.set(request.requestId, waitPendingFn);
+    const requestWithId = {...request, requestId: uuidv4()}
+
+    this.workers.get(worker)?.postMessage(requestWithId);
+    this.pendingRequests.set(requestWithId.requestId, waitPendingFn);
     return responseSubject.asObservable();
   }
 
-  init() {
+  promiseRequest<T>(request: WorkerRequest, worker: Workers = Workers.BookWorker): Promise<WorkerResponse<T>> {
+    return new Promise((resolve, reject) => {
+      const waitPendingFn = (response: WorkerResponse) => {
+        resolve(response as WorkerResponse<T>);
+      };
+
+      const internalRequest = {...request, requestId: uuidv4()}
+
+      this.workers.get(worker)?.postMessage(internalRequest);
+      this.pendingRequests.set(internalRequest.requestId, waitPendingFn);
+    });
+  }
+
+  init(workers: WorkerDefinition[]) {
     return () => {
       if (typeof Worker !== 'undefined') {
-        this.workers.set(
-          Workers.TMWorker, 
-          new Worker(new URL(`./text-manager-worker/text-manager.worker`, import.meta.url)
-        ))
-
-        this.workers.set(
-          Workers.FileWorker, 
-          new Worker(new URL(`./file-worker/file.worker`, import.meta.url)
-        ))
+        for (const { name, workerClass } of workers) {
+          this.workers.set(name, workerClass)
+        }
       }
 
       this.workers.forEach(worker => {
         if (worker) {
-          worker.onmessage = (event: MessageEvent<WorkerResponse>) => {
+          worker.onmessage = (event: MessageEvent<InternalMessage>) => {
             const { requestId } = event.data;
             const pendingFn = this.pendingRequests.get(requestId);
 
