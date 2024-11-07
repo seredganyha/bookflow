@@ -1,12 +1,11 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { SettingsModule } from './settings/settings.module';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { ThemeService } from './core/services/theme.service';
 import { WorkerService } from './core/workers/worker.service';
-
+import { AppRoutingModule } from './app-routing.module';
 import { WORKER_DEFINITIONS, WORKER_DEFINITIONS_PROVIDERS } from './core/workers/workers.provide';
 import { WorkerDefinition } from './core/workers/worker.types';
 
@@ -18,6 +17,7 @@ import { WorkerDefinition } from './core/workers/worker.types';
     BrowserModule,
     RouterOutlet, 
     CommonModule,
+    AppRoutingModule
   ],
   providers: [
     WORKER_DEFINITIONS_PROVIDERS,
