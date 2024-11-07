@@ -1,0 +1,47 @@
+:host {
+  min-height: 42px;
+  min-width: 140px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  padding: 8px 30px;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.primary {
+    background-color: var(--color-primary);
+
+    &:hover {
+      background-color: var(--color-primary-hover);
+    }
+
+    &:active {
+      background-color: var(--color-primary-active);
+    }
+
+    &:disabled {
+      background-color: var(--color-primary-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  &.secondary {
+    background-color: var(--color-secondary);
+
+    &:hover {
+      background-color: var(--color-secondary-hover);
+    }
+
+    &:active {
+      background-color: var(--color-secondary-active);
+    }
+
+    &:disabled {
+      background-color: var(--color-secondary-disabled);
+      cursor: not-allowed;
+    }
+  }
+}
