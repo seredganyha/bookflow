@@ -1,15 +1,23 @@
 :root, [data-theme="base"] {
-  --color-primary: #312EB5;
-  --color-secondary: rgba(32, 40, 62, 0.8);;
   --color-background: #FFFFFF;
   --color-text: #181818;
 }
 
 :root, [data-theme="dark"] {
-  --color-primary: #312EB5;
-  --color-secondary: rgba(32, 40, 62, 0.8);;
   --color-background: #181818;
   --color-text: #FFFFFF;
+}
+
+:root {
+  --color-primary: #312EB5;
+  --color-primary-hover: #413fc7;
+  --color-primary-active: #211f96;
+  --color-primary-disabled: #6765c4;
+
+  --color-secondary: rgba(32, 40, 62, 0.8);
+  --color-secondary-hover: rgba(41, 51, 79, 0.8);
+  --color-secondary-active: rgba(22, 29, 47, 0.8);
+  --color-secondary-disabled: rgba(55, 61, 77, 0.8);
 }
 
 [data-theme] {

@@ -53,10 +53,59 @@
   @include gap-sizes;
 }
 
+.scroll {
+  overflow: scroll;
+  &__bar {
+    &_hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        width: 0;
+      }
+    }
+  }
+}
+
 input {
   padding: 8px;
   border-radius: 6px;
   background-color: var(--color-background);
   color: var(--color-text);
   border: 1px solid var(--color-text);
+}
+
+
+.dialog {
+  padding: 40px;
+  border: none;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+h3 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: 2%;
+  margin: 12px 0;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.mt-24 {
+  margin-top: 24px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mb-24 {
+  margin-bottom: 24px;
+}
+
+.ml-84 {
+  margin-left: 84px
 }
