@@ -5,7 +5,7 @@ const workers: WorkerDefinition[] = [
   { name: Workers.BookWorker, workerClass: new Worker(new URL(`./book-worker/book.worker`, import.meta.url))},
 ];
 
-export const WORKER_DEFINITIONS = new InjectionToken<Iterable<WorkerDefinition>>('WorkerDefinitions');
+export const WORKER_DEFINITIONS = new InjectionToken<WorkerDefinition[]>('WorkerDefinitions');
 
 export const WORKER_DEFINITIONS_PROVIDERS: Provider[] = [
   {

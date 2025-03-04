@@ -6,10 +6,11 @@ import { Observable } from 'rxjs';
 import { CURRENT_THEME } from '../core/tokens/theme-token';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-settings',
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SettingsComponent {
   readonly settings$ = this.settingsService.settings$;

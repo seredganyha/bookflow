@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -21,18 +21,17 @@ import { WorkerDefinition } from './core/workers/worker.types';
   ],
   providers: [
     WORKER_DEFINITIONS_PROVIDERS,
-    { 
-      provide: APP_INITIALIZER,
-      useFactory: (themeService: ThemeService) => themeService.init(),
-      deps: [ThemeService], 
-      multi: true 
-    },
-    { 
-      provide: APP_INITIALIZER,
-      useFactory: (workerService: WorkerService, workers: WorkerDefinition[]) =>  workerService.init(workers),
-      deps: [WorkerService, WORKER_DEFINITIONS], 
-      multi: true 
-    },
+    provideAppInitializer(() => {
+        const initializerFn = ((themeService: ThemeService) => themeService.init())(inject(ThemeService));
+        return initializerFn();
+      }),
+    provideAppInitializer(() => {
+        const initializerFn = (
+          (workerService: WorkerService, workers: WorkerDefinition[]) =>  workerService.init(workers))
+          (inject(WorkerService), inject(WORKER_DEFINITIONS)
+      );
+        return initializerFn();
+      }),
   ],
   bootstrap: [AppComponent]
 })
