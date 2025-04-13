@@ -10,12 +10,9 @@
       >
       </app-book-card>
 
-      <button appButton type="secondary" class="ml-84 button-add" (click)="showModal()">
-        Добавить книгу
-      </button>
+    <button appButton (click)="showModal()">Добавить книгу</button>
 
     </div>
   </ng-container>
 
-  <app-book-add #bookAdd (closeModal)="closeModal()" (chooseBook)="addBook($event)"></app-book-add>
 </div>

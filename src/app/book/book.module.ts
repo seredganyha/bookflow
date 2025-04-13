@@ -26,11 +26,9 @@ import { ButtonComponent } from '../shared/ui/button/button.component';
     URLFromFilePipe,
     ButtonComponent
   ],
-  exports: [
-    BookComponent
-  ],
+  exports: [],
   providers: [
     BookService
   ]
 })
-export class BookModule { }
+export class BookModule {}
