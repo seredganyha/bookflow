@@ -8,6 +8,7 @@ import { WorkerService } from './core/workers/worker.service';
 import { AppRoutingModule } from './app-routing.module';
 import { WORKER_DEFINITIONS, WORKER_DEFINITIONS_PROVIDERS } from './core/workers/workers.provide';
 import { WorkerDefinition } from './core/workers/worker.types';
+import { DialogsPortalComponent } from './core/components/dialogs-portal/dialogs-portal.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { WorkerDefinition } from './core/workers/worker.types';
     BrowserModule,
     RouterOutlet, 
     CommonModule,
-    AppRoutingModule
+    AppRoutingModule,
+    DialogsPortalComponent
   ],
   providers: [
     WORKER_DEFINITIONS_PROVIDERS,
