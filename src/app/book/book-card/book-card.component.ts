@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { CardComponent } from '../../shared/ui/card/card.component';
 
 @Component({
   selector: 'app-book-card',
   templateUrl: './book-card.component.html',
-  styleUrl: './book-card.component.scss'
+  styleUrl: './book-card.component.scss',
+  standalone: false,
 })
 export class BookCardComponent {
   @Input() imgUrl?: string | null = null;

@@ -1,4 +1,4 @@
-<dialog #dialog class="dialog">
+<div class="dialog">
   <h1>Добавить книгу</h1>
 
   <form [formGroup]="form" class="stack">
@@ -19,4 +19,6 @@
 
     <button appButton class="mt-16" (click)="done()">Добавить</button>
   </form>
-</dialog>
+  <button appButton (click)="close()">close</button>
+</div>
+

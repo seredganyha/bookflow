@@ -1,21 +1,31 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Book } from '../../core/workers/book-worker/book.types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Context, DialogContext } from '../../core/services/dialogs.service';
+
+export interface BookAddForm {
+  title: string,
+  author: string,
+  description: string,
+  img: Blob,
+  file: Blob,
+}
 
 @Component({
   selector: 'app-book-add',
   templateUrl: './book-add.component.html',
   styleUrl: './book-add.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class BookAddComponent {
-  @Output() chooseBook = new EventEmitter<Book>();
-  @ViewChild('dialog') 
-  private dialog!: ElementRef
+  
+  private readonly dialogContext = inject<Context<void, Book>>(DialogContext)
   
   public form: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
+
     this.form = formBuilder.group({
       title: ['', Validators.required],
       author: [''],
@@ -24,16 +34,12 @@ export class BookAddComponent {
       file: [null, Validators.required]
     })
   }
-
-  closeModal(): void {
-    this.dialog?.nativeElement.close();
-  }
-
-  openModal(): void {
-    this.dialog?.nativeElement.showModal();
-  }
+  close() {
+    this.dialogContext.isOpen.set(false)
+  };
 
   public done() {
-    this.chooseBook.emit(this.form.value as Book);
+    this.close()
+    this.dialogContext.done.set(this.form.value)
   }
 }
