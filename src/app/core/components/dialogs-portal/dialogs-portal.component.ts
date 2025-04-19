@@ -11,7 +11,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
   styleUrl: './dialogs-portal.component.scss'
 })
 export class DialogsPortalComponent {
-  public readonly dialogs = toSignal(this.dialogService.dialogs, {initialValue: []})
-
+  public readonly dialogs = toSignal(this.dialogService.dialogs$, {initialValue: []})
   constructor(private dialogService: DialogsService) {}
 }

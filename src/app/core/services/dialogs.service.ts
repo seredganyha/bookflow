@@ -1,5 +1,6 @@
-import { inject, Injectable, InjectionToken, Injector, INJECTOR, Signal, signal, Type, WritableSignal } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { inject, Injectable, InjectionToken, Injector, Signal, signal, Type, WritableSignal } from '@angular/core';
+import { BehaviorSubject, exhaustMap, ignoreElements, Subject, tap } from 'rxjs';
+import { DIALOGS_CLOSED } from '../tokens/dialogs-closed';
 
 export interface Context<Input, Output> {
   data: Input,
@@ -10,11 +11,11 @@ export interface Context<Input, Output> {
 
 interface DialogItem {
   component: Type<unknown>,
-  isOpen: Signal<boolean>,
+  isOpen: WritableSignal<boolean>,
   injector: Injector
 }
 
-interface CustomDialog<Output = any> {
+interface CustomDialog<Output = unknown> {
   show: () => void,
   isOpen: Signal<boolean>,
   done: Signal<Output | null>
@@ -26,8 +27,23 @@ export const DialogContext = new InjectionToken('DialogContext');
   providedIn: 'root'
 })
 export class DialogsService {
+
+  private readonly dialogsClosed$ = inject(DIALOGS_CLOSED, {optional: true})
   private _dialogs = new BehaviorSubject<DialogItem[]>([])
-  public dialogs = this._dialogs.asObservable()
+  public dialogs$ = this._dialogs.asObservable()
+
+  constructor() {
+    if(this.dialogsClosed$) {
+      this.dialogsClosed$.pipe(
+        exhaustMap(() => this.dialogs$),
+        tap((dialogs) => {
+          dialogs.forEach(dialog => dialog.isOpen.set(false))
+        }),
+        ignoreElements()
+      )
+      .subscribe()
+    }
+  }
 
   add<Input = undefined, Output = undefined>(dialog: Type<unknown>, data?: Input): CustomDialog<Output> {
 
@@ -62,8 +78,4 @@ export class DialogsService {
       done: done.asReadonly(),
     }
   }
-
-  // TODO REMOVE
-
-  constructor() {}
 }
