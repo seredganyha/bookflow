@@ -1,0 +1,18 @@
+<div>
+  <h2>Каталог</h2>
+  <ng-container *ngIf="books$ | async as books">
+    <div  class="my-books flex flex__center flex__row flex__gap-large">
+      <app-book-card 
+        *ngFor="let book of books" 
+        [imgUrl]="book.img | urlFromFile" 
+        [title]="book.title"
+        [routerLink]="['/fragment', book.id]"
+      >
+      </app-book-card>
+
+    <button appButton (click)="showModal()">Добавить книгу</button>
+
+    </div>
+  </ng-container>
+
+</div>

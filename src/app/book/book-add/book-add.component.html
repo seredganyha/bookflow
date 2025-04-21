@@ -1,0 +1,24 @@
+<div class="dialog">
+  <h1>Добавить книгу</h1>
+
+  <form [formGroup]="form" class="stack">
+    <h3>Название</h3>
+    <input type="text" formControlName="title">
+
+    <h3>Описание</h3>
+    <input type="text" formControlName="description">
+
+    <h3>Автор</h3>
+    <input type="text" formControlName="author">
+
+    <h3>Файл .fb2 формата</h3>
+    <app-file-select formControlName="file"></app-file-select>
+
+    <h3>Обложка</h3>
+    <app-file-select formControlName="img"></app-file-select>
+
+    <button appButton class="mt-16" (click)="done()">Добавить</button>
+  </form>
+  <button appButton (click)="close()">close</button>
+</div>
+
